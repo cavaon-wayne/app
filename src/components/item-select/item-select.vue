@@ -254,7 +254,7 @@ export default {
 
 		this.fetchItems();
 
-		this.setSearchQuery = debounce(this.setSearchQuery, 550);
+		this.setSearchQuery = debounce(this.setSearchQuery, 850);
 
 		// Fetch the total number of items in this collection, so we can accurately render the load more
 		// button

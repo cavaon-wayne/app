@@ -93,7 +93,7 @@ export default {
 			deep: true,
 			handler(value) {
 				if (value) {
-					this.$emit('input', value);
+					this.emitValue(value);
 				}
 			}
 		}
@@ -131,13 +131,43 @@ export default {
 				this.relationalChanges = [...this.relationalChanges, update];
 			}
 		},
+		emitValue(value) {
+			if (this.initialValues.length == 0) {
+				this.$emit('input', value);
+				return;
+			}
+
+			// This is the key in the nested related object that holds the parent item again
+			const languageField = this.options.languageField;
+
+			const newValue = this.initialValues
+				.map(before => {
+					const languageKey = before[languageField];
+
+					// Check if the current item was saved before
+					const after = value.find(i => i[languageField] === languageKey);
+
+					if (after) {
+						return merge({}, before, after);
+					}
+					return before;
+				})
+				.filter(i => i);
+
+			this.$emit('input', newValue);
+		},
 		async fetchInitial() {
 			if (this.relationshipSetup === false) {
 				return;
 			}
 
-			if (this.newItem) {
+			/*if (this.newItem) {
 				this.initialValues = [];
+				return;
+			}*/
+
+			if (this.values && this.values[this.relation.field_one.field]) {
+				this.initialValues = this.values[this.relation.field_one.field];
 				return;
 			}
 
