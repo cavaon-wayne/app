@@ -159,6 +159,15 @@ export default {
 
 			const source = this.$store.state.settings.values.asset_url_naming;
 
+			const key = `directus-${size}-${fit}`;
+			if (this.image.data.thumbnails) {
+				for (const item of this.image.data.thumbnails) {
+					if (item.key == key) {
+						return item.url;
+					}
+				}
+			}
+
 			return `/${this.currentProjectKey}/assets/${this.image[source]}?key=directus-${size}-${fit}`;
 		},
 		isImage() {

@@ -98,6 +98,15 @@ export default {
 
 				const fit = this.viewOptions.fit || 'crop';
 
+				const key = `directus-medium-${fit}`;
+				if (this.image.data.thumbnails) {
+					for (const item of this.image.data.thumbnails) {
+						if (item.key == key) {
+							return item.url;
+						}
+					}
+				}
+
 				return `/${this.currentProjectKey}/assets/${sourcePath}?key=directus-medium-${fit}`;
 			}
 
