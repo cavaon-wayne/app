@@ -154,6 +154,15 @@ export default {
 				})
 				.filter(i => i);
 
+			// if there is new langauge added, then need to push to the results
+			value.forEach(after => {
+				const languageKey = after[languageField];
+				const before = newValue.find(i => i[languageField] === languageKey);
+				if (!before) {
+					newValue.push(after);
+				}
+			});
+
 			this.$emit('input', newValue);
 		},
 		async fetchInitial() {
