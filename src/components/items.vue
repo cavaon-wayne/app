@@ -368,7 +368,7 @@ export default {
 		lazyLoad() {
 			if (this.items.lazyLoading) return;
 			if (
-				this.items.meta.total_count === this.items.data.length ||
+				this.items.meta.filter_count === this.items.data.length ||
 				this.items.page * this.$store.state.settings.values.default_limit >
 					this.items.data.length
 			)
@@ -433,7 +433,7 @@ export default {
 			const availableFields = Object.keys(this.fields);
 
 			let params = {
-				meta: 'total_count,result_count',
+				meta: 'total_count,result_count,filter_count',
 				limit: this.$store.state.settings.values.default_limit,
 				offset: this.$store.state.settings.values.default_limit * this.items.page
 			};

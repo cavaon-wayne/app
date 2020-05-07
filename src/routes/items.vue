@@ -378,7 +378,7 @@ export default {
 
 			// We're showing the collection total count, until we hit the last page of infinite scrolling.
 			// At that point, we'll rely on the local count that's being set by the items.vue child component
-			let count = this.meta.total_count;
+			let count = this.meta.filter_count;
 
 			if (this.meta.result_count < this.$store.state.settings.values.default_limit) {
 				count = this.meta.local_count;
