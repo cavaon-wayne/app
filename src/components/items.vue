@@ -368,8 +368,9 @@ export default {
 		lazyLoad() {
 			if (this.items.lazyLoading) return;
 			if (
-				this.items.meta.total_count === this.items.data.length ||
-				this.items.page * 50 > this.items.data.length
+				this.items.meta.filter_count === this.items.data.length ||
+				this.items.page * this.$store.state.settings.values.default_limit >
+					this.items.data.length
 			)
 				return;
 
@@ -381,7 +382,7 @@ export default {
 			return this.$api
 				.getItems(this.collection, this.formatParams())
 				.then(res => {
-					if (res.data.length < 50) this.items.page = this.items.page + 1;
+					//if (res.data.length < 50) this.items.page = this.items.page + 1;
 					this.items.lazyLoading = false;
 
 					if (this.links) {
@@ -423,6 +424,8 @@ export default {
 					console.error(error); // eslint-disable-line no-console
 					this.items.lazyLoading = false;
 					this.items.error = error;
+					//Revert back the page cursor
+					this.items.page = this.items.page - 1;
 				});
 		},
 
@@ -430,7 +433,7 @@ export default {
 			const availableFields = Object.keys(this.fields);
 
 			let params = {
-				meta: 'total_count,result_count',
+				meta: 'total_count,result_count,filter_count',
 				limit: this.$store.state.settings.values.default_limit,
 				offset: this.$store.state.settings.values.default_limit * this.items.page
 			};
