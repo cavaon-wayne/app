@@ -166,10 +166,15 @@ export default {
 		fields() {
 			const fields = {};
 			this.fieldNames.forEach(name => {
+				let key = name;
+				if (typeof name !== 'string') {
+					key = name['key'];
+					name = name['name'];
+				}
 				if (this.collectionName) {
-					fields[name] = this.$helpers.formatField(name, this.collectionName);
+					fields[key] = this.$helpers.formatField(name, this.collectionName);
 				} else {
-					fields[name] = this.$helpers.formatTitle(name);
+					fields[key] = this.$helpers.formatTitle(name);
 				}
 			});
 			return fields;

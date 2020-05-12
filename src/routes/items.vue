@@ -393,7 +393,21 @@ export default {
 				  });
 		},
 		filterableFieldNames() {
-			return this.fields.filter(field => field.datatype).map(field => field.field);
+			return this.fields
+				.filter(field => field.datatype)
+				.map(field => {
+					let key = field.field,
+						matches;
+					if (
+						field.type == 'm2o' &&
+						field.options &&
+						field.options['template'] &&
+						(matches = field.options['template'].match(/{{(.*?)}}/))
+					) {
+						key += '.' + matches[1];
+					}
+					return { key: key, name: field.field };
+				});
 		},
 		layoutNames() {
 			if (!this.$store.state.extensions.layouts) return {};
